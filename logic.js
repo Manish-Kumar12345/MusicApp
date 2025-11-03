@@ -10,6 +10,8 @@ function searchSong() {
   if (singerName) loadAllSongs(singerName);
 }
 
+let audioPlayerPlaying;
+
 function toggleLoader(show) {
   const loader = document.querySelector('.loader-container');
   loader.style.display = show ? 'flex' : 'none';
@@ -34,6 +36,14 @@ function createCard(songObject) {
   artistDiv.innerText = songObject.artistName;
 
   const audioTag = document.createElement('audio');
+  audioTag.addEventListener('play', function(){
+    console.log('Playing Call.... ', this);
+    if(audioPlayerPlaying && !audioPlayerPlaying.paused && !audioPlayerPlaying.ended){
+    audioPlayerPlaying.pause();
+    audioPlayerPlaying.currentTime = 0;
+    }
+    audioPlayerPlaying = this;
+  } )
   audioTag.src = songObject.previewUrl;
   audioTag.controls = true;
 
